@@ -2,8 +2,19 @@ const Post = require('../models/Post');
 
 exports.createPost = async (req, res) => {
     try {
-        const post = await Post.create(req.body);
-        res.status(201).json(post);
+        const { user_id, place_name, description, latitude, longitude } = req.body;
+        const image = req.file ? req.file.filename : null; // Get uploaded image filename
+
+        const newPost = await Post.create({
+        user_id,
+        place_name,
+        description,
+        image,
+        latitude,
+        longitude,
+        });
+
+        res.status(201).json(newPost);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

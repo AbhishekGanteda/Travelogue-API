@@ -9,12 +9,16 @@ const postRoutes = require('./routes/postRoutes');
 const likeRoutes = require('./routes/likeRoutes');
 const savedRoutes = require('./routes/savedRoutes');
 const followRoutes = require('./routes/followRoutes');
+const path = require('path');
 
 const app = express();
 
 dotenv.config();
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from the uploads directory
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/users', userRoutes);
