@@ -1,23 +1,21 @@
 const jwt = require("jsonwebtoken");
 
-// Middleware to verify JWT token
 const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (token == null) {
-    return res.sendStatus(401); // Unauthorized if no token is provided
+  const authHeader = req.headers["authorization"];
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "No token provided or invalid format" });
   }
 
-  // Verify the token using your secret key
-  jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+  const token = authHeader.split(" ")[1];
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
-      return res.sendStatus(403); // Forbidden if token is invalid
+      return res.status(403).json({ error: "Invalid or expired token" });
     }
-    req.user = user; 
+
+    req.user = user; // Attach user data to the request
     next();
   });
 };
 
 module.exports = authenticateToken;
-
