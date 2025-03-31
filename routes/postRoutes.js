@@ -5,7 +5,7 @@ const upload = require('../config/multerConfig');
 const authenticate = require('../middleware/authenticateToken');
 
 
-router.post('/', upload.single('image'), createPost);
+router.post('/', authenticate, upload.single('image'), createPost);
 router.get('/', authenticate, getPosts);
 router.get('/:userId', authenticate, getUserPosts);
 router.put('/:id', authenticate, updatePost);
