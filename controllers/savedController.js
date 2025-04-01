@@ -11,17 +11,33 @@ exports.savePost = async (req, res) => {
 
 exports.unsavePost = async (req, res) => {
     try {
-        await SavedPost.destroy({ where: { id: req.params.id } });
+        await SavedPost.destroy({ where: { user_id: req.params.userId, post_id: req.params.postId } });
+        console.log("Called saved destroy")
         res.json({ message: 'Post unsaved successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-exports.getSavedPosts = async (req, res) => {
+exports.getPostsCount = async (req, res) => {
     try {
-        const savedPosts = await SavedPost.findAll({ where: { user_id: req.params.userId } });
-        res.json(savedPosts);
+        const savedCount = await SavedPost.count({ where: { post_id: req.params.postId } });
+        console.log("came to getPostsCount  "+savedCount)
+        res.json(savedCount);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.postSavedOrNot = async (req, res) => {
+    try {
+        const { postId } = req.params;
+        const { userId } = req.query;
+        const save = await SavedPost.findOne({
+            where: { post_id: postId, user_id: userId }
+        });
+        console.log("came to postSavedOrNot  "+save !== null)
+        res.json({ isSaved: save !== null });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

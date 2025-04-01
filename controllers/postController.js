@@ -1,4 +1,5 @@
 const Post = require('../models/Post');
+const { Op } = require("sequelize");
 
 exports.createPost = async (req, res) => {
     try {
@@ -22,7 +23,12 @@ exports.createPost = async (req, res) => {
 
 exports.getPosts = async (req, res) => {
     try {
-        const posts = await Post.findAll();
+        const { userId } = req.params;
+        const posts = await Post.findAll({
+            where: {
+                user_id: { [Op.ne]: userId }
+            }
+        });
         res.json(posts);
     } catch (error) {
         res.status(500).json({ error: error.message });

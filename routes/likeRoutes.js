@@ -1,10 +1,11 @@
 const express = require('express');
-const { likePost, unlikePost, getPostLikes } = require('../controllers/likeController');
+const { likePost, unlikePost, getLikesCount, postLikedOrNot } = require('../controllers/likeController');
 const authenticate = require('../middleware/authenticateToken');
 const router = express.Router();
 
 router.post('/', authenticate, likePost);
-router.delete('/:id', authenticate, unlikePost);
-router.get('/:postId', authenticate, getPostLikes);
+router.delete('/:userId/:postId', authenticate, unlikePost);
+router.get('/:postId', getLikesCount);
+router.get('/liked/:postId', postLikedOrNot);
 
 module.exports = router;

@@ -11,18 +11,36 @@ exports.likePost = async (req, res) => {
 
 exports.unlikePost = async (req, res) => {
     try {
-        await Like.destroy({ where: { id: req.params.id } });
+        await Like.destroy({ where: { user_id: req.params.userId, post_id: req.params.postId } });
         res.json({ message: 'Post unliked successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-exports.getPostLikes = async (req, res) => {
+exports.getLikesCount = async (req, res) => {
     try {
-        const likes = await Like.findAll({ where: { post_id: req.params.postId } });
-        res.json(likes);
+        const likeCount = await Like.count({ where: { post_id: req.params.postId } });
+        console.log("came to getLikesCount  "+likeCount)
+        res.json(likeCount);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
+
+
+exports.postLikedOrNot = async (req, res) => {
+    try {
+        const { postId } = req.params;
+        const { userId } = req.query;
+        const like = await Like.findOne({
+            where: { post_id: postId, user_id: userId }
+        });
+        console.log("came to postLikedOrNot  "+like !== null)
+        res.json({ isLiked: like !== null });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
