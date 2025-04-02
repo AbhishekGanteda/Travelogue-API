@@ -13,6 +13,6 @@ const Post = sequelize.define('Post', {
 }, { timestamps: true });
 
 User.hasMany(Post, { foreignKey: 'user_id' , onDelete: 'CASCADE'});
-Post.belongsTo(User, { foreignKey: 'user_id' });
+Post.belongsTo(User, { foreignKey: 'user_id', onDelete: 'CASCADE' });
 
 module.exports = Post;

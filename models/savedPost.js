@@ -20,7 +20,7 @@ const SavedPost = sequelize.define('SavedPost', {
 
 User.hasMany(SavedPost, { foreignKey: 'user_id', onDelete: 'CASCADE' });
 Post.hasMany(SavedPost, { foreignKey: 'post_id', onDelete: 'CASCADE' });
-SavedPost.belongsTo(User, { foreignKey: 'user_id' });
-SavedPost.belongsTo(Post, { foreignKey: 'post_id' });
+SavedPost.belongsTo(User, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+SavedPost.belongsTo(Post, { foreignKey: 'post_id', as: 'post', onDelete: 'CASCADE'});
 
 module.exports = SavedPost;

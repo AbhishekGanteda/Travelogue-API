@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/', authenticate, likePost);
 router.delete('/:userId/:postId', authenticate, unlikePost);
-router.get('/:postId', getLikesCount);
-router.get('/liked/:postId', postLikedOrNot);
+router.get('/:postId', authenticate, getLikesCount);
+router.get('/liked/:postId', authenticate, postLikedOrNot);
 
 module.exports = router;

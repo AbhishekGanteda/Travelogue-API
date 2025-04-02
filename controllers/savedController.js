@@ -22,7 +22,6 @@ exports.unsavePost = async (req, res) => {
 exports.getPostsCount = async (req, res) => {
     try {
         const savedCount = await SavedPost.count({ where: { post_id: req.params.postId } });
-        console.log("came to getPostsCount  "+savedCount)
         res.json(savedCount);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -36,7 +35,6 @@ exports.postSavedOrNot = async (req, res) => {
         const save = await SavedPost.findOne({
             where: { post_id: postId, user_id: userId }
         });
-        console.log("came to postSavedOrNot  "+save !== null)
         res.json({ isSaved: save !== null });
     } catch (error) {
         res.status(500).json({ error: error.message });

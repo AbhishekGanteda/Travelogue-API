@@ -1,4 +1,5 @@
 const Post = require('../models/Post');
+const SavedPost = require('../models/savedPost');
 const { Op } = require("sequelize");
 
 exports.createPost = async (req, res) => {
@@ -57,6 +58,32 @@ exports.deletePost = async (req, res) => {
     try {
         await Post.destroy({ where: { id: req.params.id } });
         res.json({ message: 'Post deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.getSavedPosts = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const savedPosts = await SavedPost.findAll({
+            where: { user_id: userId },
+            include: [{
+                model: Post,
+                as: 'post'
+            }]
+        });
+        const postsList = savedPosts.map(savedPost => savedPost.post);
+        res.status(200).json(postsList);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+exports.getUserPostsCount = async (req, res) => {
+    try {
+        const count = await Post.count({ where: { user_id: req.params.userId } });
+        res.json(count);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

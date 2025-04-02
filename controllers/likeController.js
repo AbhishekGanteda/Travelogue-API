@@ -21,7 +21,6 @@ exports.unlikePost = async (req, res) => {
 exports.getLikesCount = async (req, res) => {
     try {
         const likeCount = await Like.count({ where: { post_id: req.params.postId } });
-        console.log("came to getLikesCount  "+likeCount)
         res.json(likeCount);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -36,7 +35,6 @@ exports.postLikedOrNot = async (req, res) => {
         const like = await Like.findOne({
             where: { post_id: postId, user_id: userId }
         });
-        console.log("came to postLikedOrNot  "+like !== null)
         res.json({ isLiked: like !== null });
     } catch (error) {
         res.status(500).json({ error: error.message });
