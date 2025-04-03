@@ -8,7 +8,7 @@ const authenticate = require('../middleware/authenticateToken');
 router.post('/', authenticate, upload.single('image'), createPost);
 router.get('/all/:userId', authenticate, getPosts);
 router.get('/:userId', authenticate, getUserPosts);
-router.put('/:id', authenticate, updatePost);
+router.put('/:postId', authenticate, updatePost);
 router.delete('/:id', authenticate, deletePost);
 router.get('/saved/:userId', authenticate, getSavedPosts);
 router.get('/count/:userId', authenticate, getUserPostsCount);

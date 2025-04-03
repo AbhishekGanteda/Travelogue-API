@@ -47,7 +47,14 @@ exports.getUserPosts = async (req, res) => {
 
 exports.updatePost = async (req, res) => {
     try {
-        await Post.update(req.body, { where: { id: req.params.id } });
+        const { postId } = req.params;
+        const { place_name, description, latitude, longitude } = req.body;
+        const lat = latitude ? parseFloat(latitude) : null;
+        const lon = longitude ? parseFloat(longitude) : null;
+        await Post.update(
+            { place_name, description, latitude: lat, longitude: lon },
+            { where: { id: postId } }
+        );
         res.json({ message: 'Post updated successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });
