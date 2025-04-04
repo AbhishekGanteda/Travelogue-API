@@ -29,8 +29,12 @@ exports.getFollowers = async (req, res) => {
 
 exports.getFollowing = async (req, res) => {
     try {
-        const following = await Follower.findAll({ where: { follower_id: req.params.userId } });
-        res.json(following);
+        const following = await Follower.findAll({ 
+            where: { follower_id: req.params.userId },
+            attributes: ['following_id']
+        });
+
+        res.json(following.map(f => f.following_id));
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

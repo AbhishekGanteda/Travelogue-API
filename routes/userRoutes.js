@@ -6,7 +6,7 @@ const upload = require('../config/multerConfig');
 
 router.post('/signup', signUp);
 router.post('/login', logIn);
-router.get('/:id', authenticate, getUserProfile);
+router.get('/:id', getUserProfile);
 router.put('/update/:id', authenticate, upload.single('image'), updateUserProfile);
 
 module.exports = router;

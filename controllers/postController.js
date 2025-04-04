@@ -95,3 +95,12 @@ exports.getUserPostsCount = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+exports.getPostById = async (req,res) => {
+    try {
+        const post = await Post.findOne({ where: { id: req.params.id } });
+        res.json(post);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}
